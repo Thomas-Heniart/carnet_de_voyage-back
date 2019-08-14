@@ -1,0 +1,4 @@
+apps:
+  - script: build/app.js            # Application's startup file name
+    instances: 4                    # Number of processes that must run in parallel
+    exec_mode: cluster              # Execution mode
