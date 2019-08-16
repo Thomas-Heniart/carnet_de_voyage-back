@@ -1,0 +1,38 @@
+version: "3"
+services:
+  node:
+    build: ./
+    container_name: node
+    command: npm run prod
+    restart: unless-stopped
+    networks:
+      node-net:
+        # When running locally, the nginx proxy is expecting two upstream servers to be
+        # available. However, locally, I don't need high-availability. As such, I'm going
+        # to create one instance of "web" and just give it the two aliases that are being
+        # used in the nginx proxy-pass definition.
+        aliases:
+          - node_1
+          - node_2
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+    volumes:
+      - ./node:/var/www/carnet_de_voyage.com
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    restart: unless-stopped
+    networks:
+      - node-net
+    ports:
+      - 8090:80
+    links:
+      - node
+    volumes:
+      - ./public/images:/var/www/media/images
+
+networks:
+  node-net:
+    driver: bridge
