@@ -96,3 +96,5 @@ typings/
 
 .idea/
 build/
+.env
+dev.sqlite3

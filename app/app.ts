@@ -1,5 +1,11 @@
 import express = require("express");
 
+const dotenvResult = require("dotenv").config();
+
+if (dotenvResult.error) {
+    throw dotenvResult.error;
+}
+
 const app: express.Application = express();
 
 const routes = require('./routes');
